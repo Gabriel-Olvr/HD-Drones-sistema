@@ -1,0 +1,367 @@
+{% extends 'admin/base.html' %}
+
+{% block head_css %}
+{{ super() }}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+    /* === TEMA GLOBAL HD DRONES (aplicado em TODAS as páginas do painel) === */
+
+    body, html {
+        font-family: 'Montserrat', sans-serif !important;
+        background-color: #0d0d0d !important;
+        color: #f1f1f1 !important;
+    }
+
+    .content-wrapper, .wrapper, .content, .container-fluid {
+        background-color: #0d0d0d !important;
+        color: #f1f1f1 !important;
+    }
+
+    /* Cabeçalho / navbar (AdminLTE2 e AdminLTE3/Bootstrap4) */
+    .main-header, .main-header.navbar, .navbar, .navbar-dark, .skin-dark .main-header .navbar {
+        background-color: #161616 !important;
+        border-bottom: 2px solid #ff7a00 !important;
+    }
+    .main-header .nav-link, .navbar .nav-link, .navbar a {
+        color: #eee !important;
+    }
+
+    /* Logo / marca */
+    .main-header .logo, .brand-link {
+        background-color: #121212 !important;
+        border-bottom: 2px solid #ff7a00 !important;
+    }
+    .brand-text {
+        color: #ff7a00 !important;
+        font-weight: 900 !important;
+        font-style: italic !important;
+    }
+
+    /* Barra lateral (AdminLTE2: .main-sidebar/.left-side | AdminLTE3: .main-sidebar/.sidebar-dark-primary) */
+    .main-sidebar, .left-side, .sidebar-dark-primary, .sidebar {
+        background-color: #141414 !important;
+        border-right: 1px solid #222 !important;
+    }
+    .sidebar-menu > li > a, .nav-sidebar .nav-link, .nav-sidebar .nav-item a {
+        color: #ccc !important;
+        font-weight: 500;
+    }
+    .sidebar-menu > li.active > a, .sidebar-menu > li > a:hover,
+    .nav-sidebar .nav-link.active, .nav-sidebar .nav-link:hover {
+        background-color: #ff7a00 !important;
+        color: #fff !important;
+        font-weight: 700;
+    }
+
+    /* Rodapé */
+    .main-footer {
+        background-color: #121212 !important;
+        color: #777 !important;
+        border-top: 1px solid #222 !important;
+    }
+    .main-footer a {
+        color: #ff7a00 !important;
+    }
+
+    /* Cards (usados em listagens, formulários e detalhes) */
+    .card, .box {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    .card-header, .box-header {
+        background-color: #1f1f1f !important;
+        border-bottom: 1px solid #333 !important;
+        color: #ff7a00 !important;
+        font-weight: 700;
+    }
+
+    /* Tabelas de listagem (Usuários, Produtos, OS, Vendas) */
+    .table {
+        color: #eee !important;
+    }
+    .table thead th {
+        background-color: #1f1f1f !important;
+        color: #ff7a00 !important;
+        border-color: #333 !important;
+    }
+    .table td, .table th {
+        border-color: #2a2a2a !important;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #161616 !important;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #222 !important;
+    }
+
+    /* Formulários (Create/Edit) */
+    .form-control, select.form-control, textarea.form-control {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    .form-control:focus {
+        border-color: #ff7a00 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 122, 0, 0.25) !important;
+    }
+    label {
+        color: #ccc !important;
+    }
+
+    /* Botões */
+    .btn-primary {
+        background-color: #ff7a00 !important;
+        border-color: #ff7a00 !important;
+        color: #0d0d0d !important;
+        font-weight: 700;
+    }
+    .btn-primary:hover {
+        background-color: #e56d00 !important;
+        border-color: #e56d00 !important;
+    }
+    .btn-default, .btn-secondary {
+        background-color: #262626 !important;
+        border-color: #444 !important;
+        color: #fff !important;
+    }
+
+    /* Paginação e breadcrumb */
+    .pagination .page-link {
+        background-color: #1a1a1a !important;
+        border-color: #333 !important;
+        color: #eee !important;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #ff7a00 !important;
+        border-color: #ff7a00 !important;
+        color: #0d0d0d !important;
+    }
+    .breadcrumb {
+        background-color: transparent !important;
+        color: #aaa !important;
+    }
+
+    /* Modais (edit_modal / create_modal / details_modal) */
+    .modal-content {
+        background-color: #1a1a1a !important;
+        color: #fff !important;
+        border: 1px solid #333 !important;
+    }
+    .modal-header, .modal-footer {
+        border-color: #333 !important;
+    }
+
+    /* Links e abas (removendo qualquer resquício de azul do Bootstrap) — não afeta botões (.btn) */
+    a:not(.btn), .column-header a, .dropdown-item, .nav-link {
+        color: #ff9838 !important;
+    }
+    a:not(.btn):hover, .column-header a:hover {
+        color: #ff7a00 !important;
+    }
+
+    /* === SELECT2 (usado nos filtros e em campos de seleção) === */
+    .select2-container--bootstrap4 .select2-selection,
+    .select2-selection {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    .select2-selection__rendered {
+        color: #fff !important;
+    }
+    .select2-dropdown {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    .select2-search__field {
+        background-color: #0d0d0d !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    .select2-results__option {
+        background-color: #1a1a1a !important;
+        color: #eee !important;
+    }
+    .select2-results__option--highlighted,
+    .select2-results__option[aria-selected="true"] {
+        background-color: #ff7a00 !important;
+        color: #0d0d0d !important;
+    }
+    .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b {
+        border-color: #ccc transparent transparent transparent !important;
+    }
+
+    /* === x-editable (o campo clicável tipo "novo" na listagem de Produtos) === */
+    .editable-click, a.editable-click, a.editable-click:hover {
+        color: #ff9838 !important;
+        border-bottom: 1px dashed #ff7a00 !important;
+    }
+    .editableform .form-control {
+        background-color: #1a1a1a !important;
+        color: #fff !important;
+        border: 1px solid #333 !important;
+    }
+    .popover {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    .popover-header, .popover-title {
+        background-color: #1f1f1f !important;
+        color: #ff7a00 !important;
+        border-bottom: 1px solid #333 !important;
+    }
+    .popover-body, .popover-content {
+        color: #fff !important;
+    }
+    .popover .arrow::after {
+        border-top-color: #1a1a1a !important;
+    }
+
+    /* === Calendário de data (bootstrap-daterangepicker), usado nos filtros de data === */
+    .daterangepicker {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    .daterangepicker .calendar-table {
+        background-color: #1a1a1a !important;
+        border: none !important;
+    }
+    .daterangepicker td, .daterangepicker th {
+        color: #eee !important;
+    }
+    .daterangepicker td.off, .daterangepicker td.off.in-range {
+        color: #555 !important;
+    }
+    .daterangepicker td.active, .daterangepicker td.active:hover {
+        background-color: #ff7a00 !important;
+        color: #0d0d0d !important;
+    }
+    .daterangepicker select.monthselect,
+    .daterangepicker select.yearselect,
+    .daterangepicker select.hourselect,
+    .daterangepicker select.minuteselect {
+        background-color: #0d0d0d !important;
+        color: #fff !important;
+        border: 1px solid #333 !important;
+    }
+    .daterangepicker .drp-buttons {
+        border-top: 1px solid #333 !important;
+    }
+    .daterangepicker:after {
+        border-bottom-color: #1a1a1a !important;
+    }
+    .daterangepicker:before {
+        border-bottom-color: #333 !important;
+    }
+
+    /* === REDE DE SEGURANÇA: pega qualquer variação de classe que os seletores acima não cobriram === */
+    [class*="select2"] {
+        background-color: #1a1a1a !important;
+        color: #fff !important;
+    }
+    [class*="editable"] {
+        background-color: #1a1a1a !important;
+        color: #fff !important;
+    }
+    [class*="daterangepicker"] {
+        background-color: #1a1a1a !important;
+        color: #fff !important;
+    }
+    select, input[type="text"], input[type="email"], input[type="password"],
+    input[type="number"], input[type="search"], textarea {
+        background-color: #1a1a1a !important;
+        color: #fff !important;
+        border: 1px solid #333 !important;
+    }
+    .dropdown-menu {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+    }
+    option {
+        background-color: #1a1a1a !important;
+        color: #fff !important;
+    }
+    .nav-tabs .nav-link.active {
+        background-color: #ff7a00 !important;
+        color: #0d0d0d !important;
+        border-color: #ff7a00 !important;
+        font-weight: 700;
+    }
+    .nav-tabs .nav-link {
+        color: #ccc !important;
+    }
+</style>
+{% endblock %}
+
+{% block brand %}
+<a href="{{ admin_view.admin.url }}" class="navbar-brand" style="display: flex; align-items: center; gap: 8px; padding-top: 8px; padding-bottom: 8px;">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="HD Drones"
+         style="height: 34px; width: 34px; object-fit: contain; border-radius: 6px;">
+    <span style="color: #ff7a00; font-weight: 900; font-style: italic; letter-spacing: -0.5px; font-size: 1.05em;">HD DRONES</span>
+</a>
+{% endblock %}
+
+{% block access_control %}
+{% if current_user.is_authenticated %}
+<!-- User Account: style can be found in dropdown.less -->
+
+<li class="dropdown user user-menu">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-user-circle" style="color: white; font-size: 1.4em;"></i>
+    <span class="hidden-xs">
+       {% if current_user.first_name %}
+       {{ current_user.first_name }}
+       {% else %}
+       {{ current_user.email }}
+       {% endif %}                 
+   </span>
+</a>
+<ul class="dropdown-menu">
+  <!-- User image -->
+  <li class="user-header">
+    <i class="fa fa-user-circle" style="color: white; font-size: 7em;"></i>
+    <p>
+       {% if current_user.first_name %}
+       {{ current_user.first_name }}
+       {% else %}
+       {{ current_user.email }}
+       {% endif %}
+       - Web Developer
+       <small>Member since Nov. 2020</small>
+   </p>
+</li>
+<!-- Menu Body -->
+<li class="user-body">
+  <div class="row">
+    <div class="col-xs-4 text-center">
+      <a href="#">Followers</a>
+  </div>
+  <div class="col-xs-4 text-center">
+      <a href="#">Sales</a>
+  </div>
+  <div class="col-xs-4 text-center">
+      <a href="#">Friends</a>
+  </div>
+</div>
+<!-- /.row -->
+</li>
+<!-- Menu Footer-->
+<li class="user-footer">
+  <div class="pull-left">
+    <a href="#" class="btn btn-default btn-flat">Profile</a>
+</div>
+<div class="pull-right">
+<a href="{{ url_for('security.logout') }}" class="btn btn-default btn-flat">Sign out</a>
+</div>
+</li>
+</ul>
+</li>
+
+
+    {% endif %}
+    {% endblock %}

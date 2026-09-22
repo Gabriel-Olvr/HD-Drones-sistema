@@ -1,0 +1,137 @@
+{% extends 'my_master.html' %}
+
+{% block body %}
+<style>
+    /* Importa fontes fortes e modernas (Montserrat e Syne/Impact style) para combinar com a logo */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,700&display=swap');
+
+    /* Força a tipografia em toda a interface */
+    body, html, .content, .container-fluid, .wrapper, .content-wrapper, .main-sidebar, .navbar {
+        font-family: 'Montserrat', sans-serif !important;
+        background-color: #0d0d0d !important;
+        color: #f1f1f1 !important;
+    }
+
+    /* Remove o azul do topo e lateral do AdminLTE e substitui por Preto/Grafite com detalhe Laranja HD */
+    .main-header, .navbar, .main-header .navbar, .skin-dark .main-header .navbar {
+        background-color: #161616 !important;
+        border-bottom: 2px solid #ff7a00 !important;
+    }
+    
+    .main-header .logo {
+        background-color: #121212 !important;
+        color: #ff7a00 !important;
+        font-weight: 900 !important;
+        font-style: italic !important;
+        letter-spacing: 1px;
+        border-bottom: 2px solid #ff7a00 !important;
+    }
+
+    /* Barra lateral totalmente escura */
+    .main-sidebar, .left-side {
+        background-color: #141414 !important;
+        border-right: 1px solid #222 !important;
+    }
+
+    .sidebar-menu > li > a {
+        color: #ccc !important;
+        font-weight: 500;
+    }
+    .sidebar-menu > li.active > a, .sidebar-menu > li > a:hover {
+        background-color: #ff7a00 !important;
+        color: #fff !important;
+        font-weight: 700;
+    }
+
+    /* Rodapé escuro */
+    .main-footer {
+        background-color: #121212 !important;
+        color: #777 !important;
+        border-top: 1px solid #222 !important;
+    }
+    .main-footer a {
+        color: #ff7a00 !important;
+    }
+
+    /* Cards de Atalho com visual moderno */
+    .card {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        border-color: #ff7a00 !important;
+    }
+    .card h4, .card p {
+        color: #fff !important;
+    }
+</style>
+
+<div class="container-fluid" style="margin-top: 20px;">
+    <!-- Cabeçalho com a identidade visual da marca -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h1 style="color: #ff7a00; font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -1px; font-size: 2.5rem;">
+                HD <span style="color: #fff;">DRONES</span> <span style="font-size: 0.5em; background: #ff7a00; color: #fff; padding: 4px 8px; border-radius: 4px; font-style: normal; vertical-align: middle;">GESTÃO</span>
+            </h1>
+            <p style="color: #aaa; font-weight: 500;">Central de operações, frente de caixa e controle de oficina.</p>
+        </div>
+    </div>
+
+    <!-- Atalhos Principais Diretos -->
+    <div class="row">
+        <!-- Ação 1: Nova Venda / PDV -->
+        <div class="col-md-4 mb-3">
+            <div class="card p-4" style="border-left: 4px solid #ff7a00; border-radius: 6px;">
+                <h4 style="color: #ff7a00; font-weight: 800;"><i class="fa fa-cash-register"></i> Frente de Caixa (PDV)</h4>
+                <p style="color: #bbb; font-size: 0.9em;">Vendas rápidas no balcão com geração de QR Code Pix integrado.</p>
+                <a href="/pdv" class="btn btn-block font-weight-bold mt-3" style="background-color: #ff7a00; color: #fff; border: none; padding: 12px; font-weight: 700; text-transform: uppercase;">
+                    Abrir PDV
+                </a>
+            </div>
+        </div>
+
+        <!-- Ação 2: Cadastro de Ordem de Serviço -->
+        <div class="col-md-4 mb-3">
+            <div class="card p-4" style="border-left: 4px solid #555; border-radius: 6px;">
+                <h4 style="color: #fff; font-weight: 800;"><i class="fa fa-tools"></i> Ordens de Serviço (OS)</h4>
+                <p style="color: #bbb; font-size: 0.9em;">Cadastrar e gerenciar manutenção, taxas e conserto de drones.</p>
+                <a href="/admin/serviceorder" class="btn btn-secondary btn-block font-weight-bold mt-3" style="background-color: #262626; border: 1px solid #444; color: #fff; padding: 12px; font-weight: 700; text-transform: uppercase;">
+                    Gerenciar Oficina
+                </a>
+            </div>
+        </div>
+
+        <!-- Ação 3: Estoque e Produtos -->
+        <div class="col-md-4 mb-3">
+            <div class="card p-4" style="border-left: 4px solid #555; border-radius: 6px;">
+                <h4 style="color: #fff; font-weight: 800;"><i class="fa fa-boxes"></i> Estoque de Produtos</h4>
+                <p style="color: #bbb; font-size: 0.9em;">Consultar preços, categorias (novos/seminovos) e quantidades.</p>
+                <a href="/admin/product" class="btn btn-secondary btn-block font-weight-bold mt-3" style="background-color: #262626; border: 1px solid #444; color: #fff; padding: 12px; font-weight: 700; text-transform: uppercase;">
+                    Ver Produtos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bloco Secundário: Resumo -->
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card p-4" style="border-radius: 6px;">
+                <h4 style="color: #ff7a00; font-weight: 800;"><i class="fa fa-chart-line"></i> Desempenho Comercial</h4>
+                <hr style="border-color: #333;">
+                <p style="color: #bbb;">O sistema está registrando todas as entradas, baixas automáticas de estoque e comissões dos vendedores em segundo plano com segurança integrada.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4" style="border-radius: 6px;">
+                <h4 style="color: #ff7a00; font-weight: 800;"><i class="fa fa-users"></i> Gestão de Usuários</h4>
+                <p style="color: #bbb; font-size: 0.9em;">O cadastro de operadores e administradores está acessível diretamente no menu lateral.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

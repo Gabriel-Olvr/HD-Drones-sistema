@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,700&display=swap');
+
+/* Força a paleta HD Drones e a tipografia Montserrat em TODAS as telas do painel */
+body, html, .content, .container-fluid, .wrapper, .content-wrapper, .main-sidebar, .navbar, .card, .panel, .table {
+    font-family: 'Montserrat', sans-serif !important;
+    background-color: #0d0d0d !important;
+    color: #f1f1f1 !important;
+}
+
+/* Remove o azul do topo e aplica o tema grafite com detalhe laranja */
+.main-header, .navbar, .main-header .navbar {
+    background-color: #161616 !important;
+    border-bottom: 2px solid #ff7a00 !important;
+}
+
+.main-header .logo {
+    background-color: #121212 !important;
+    color: #ff7a00 !important;
+    font-weight: 900 !important;
+    font-style: italic !important;
+    border-bottom: 2px solid #ff7a00 !important;
+}
+
+/* Barra lateral escura e moderna */
+.main-sidebar, .left-side {
+    background-color: #141414 !important;
+    border-right: 1px solid #222 !important;
+}
+
+.sidebar-menu > li > a {
+    color: #ccc !important;
+    font-weight: 500;
+}
+
+.sidebar-menu > li.active > a, .sidebar-menu > li > a:hover {
+    background-color: #ff7a00 !important;
+    color: #fff !important;
+    font-weight: 700;
+}
+
+/* Tabelas e listagens escuras em todas as seções */
+.table, .table-bordered, .table-striped, .well {
+    background-color: #161616 !important;
+    color: #fff !important;
+    border-color: #333 !important;
+}
+.table th, .table td {
+    border-color: #333 !important;
+    color: #fff !important;
+}
+
+/* Rodapé escuro */
+.main-footer {
+    background-color: #121212 !important;
+    color: #777 !important;
+    border-top: 1px solid #222 !important;
+}
+.main-footer a {
+    color: #ff7a00 !important;
+}

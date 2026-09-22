@@ -1,0 +1,69 @@
+{% extends 'admin/base.html' %}
+
+{% block brand %}
+<a href="{{ admin_view.admin.url }}" class="navbar-brand" style="display: flex; align-items: center; gap: 8px; padding-top: 8px; padding-bottom: 8px;">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="HD Drones"
+         style="height: 34px; width: 34px; object-fit: contain; border-radius: 6px;">
+    <span style="color: #ff7a00; font-weight: 900; font-style: italic; letter-spacing: -0.5px; font-size: 1.05em;">HD DRONES</span>
+</a>
+{% endblock %}
+
+{% block access_control %}
+{% if current_user.is_authenticated %}
+<!-- User Account: style can be found in dropdown.less -->
+
+<li class="dropdown user user-menu">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-user-circle" style="color: white; font-size: 1.4em;"></i>
+    <span class="hidden-xs">
+       {% if current_user.first_name %}
+       {{ current_user.first_name }}
+       {% else %}
+       {{ current_user.email }}
+       {% endif %}                 
+   </span>
+</a>
+<ul class="dropdown-menu">
+  <!-- User image -->
+  <li class="user-header">
+    <i class="fa fa-user-circle" style="color: white; font-size: 7em;"></i>
+    <p>
+       {% if current_user.first_name %}
+       {{ current_user.first_name }}
+       {% else %}
+       {{ current_user.email }}
+       {% endif %}
+       - Web Developer
+       <small>Member since Nov. 2020</small>
+   </p>
+</li>
+<!-- Menu Body -->
+<li class="user-body">
+  <div class="row">
+    <div class="col-xs-4 text-center">
+      <a href="#">Followers</a>
+  </div>
+  <div class="col-xs-4 text-center">
+      <a href="#">Sales</a>
+  </div>
+  <div class="col-xs-4 text-center">
+      <a href="#">Friends</a>
+  </div>
+</div>
+<!-- /.row -->
+</li>
+<!-- Menu Footer-->
+<li class="user-footer">
+  <div class="pull-left">
+    <a href="#" class="btn btn-default btn-flat">Profile</a>
+</div>
+<div class="pull-right">
+<a href="{{ url_for('security.logout') }}" class="btn btn-default btn-flat">Sign out</a>
+</div>
+</li>
+</ul>
+</li>
+
+
+    {% endif %}
+    {% endblock %}

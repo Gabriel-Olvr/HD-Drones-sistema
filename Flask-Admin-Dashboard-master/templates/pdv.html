@@ -1,0 +1,513 @@
+{% extends admin_base_template %}
+
+{% block body %}
+<style>
+  .pdv-wrap {
+    font-family: 'Montserrat', sans-serif;
+    color: #f2f2f2;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .pdv-title {
+    width: 100%;
+    font-weight: 800;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .pdv-title span { color: #ff7a00; }
+
+  .pdv-catalog {
+    flex: 2 1 480px;
+    background: #161616;
+    border: 1px solid #262626;
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .pdv-search {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #0d0d0d;
+    color: #f2f2f2;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .pdv-search:focus {
+    outline: none;
+    border-color: #ff7a00;
+  }
+
+  .pdv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    max-height: 560px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  .pdv-product {
+    background: #1a1a1a;
+    border: 1px solid #262626;
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    transition: border-color .15s ease, transform .1s ease;
+  }
+
+  .pdv-product:hover {
+    border-color: #ff7a00;
+    transform: translateY(-2px);
+  }
+
+  .pdv-product.out-of-stock {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .pdv-product .pdv-cat {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(255,122,0,0.15);
+    color: #ff7a00;
+    margin-bottom: 8px;
+  }
+
+  .pdv-product .pdv-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .pdv-product .pdv-price {
+    color: #ff7a00;
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  .pdv-product .pdv-stock {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+  }
+
+  .pdv-cart {
+    flex: 1 1 320px;
+    background: #161616;
+    border: 1px solid #262626;
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    max-height: 620px;
+  }
+
+  .pdv-cart h3 {
+    color: #ff7a00;
+    text-transform: uppercase;
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+
+  .pdv-cart-items {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 14px;
+  }
+
+  .pdv-cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #222;
+  }
+
+  .pdv-cart-item .pdv-ci-name {
+    font-size: 13px;
+    font-weight: 600;
+    max-width: 140px;
+  }
+
+  .pdv-cart-item .pdv-ci-qty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pdv-cart-item .pdv-ci-qty button {
+    background: #262626;
+    border: none;
+    color: #f2f2f2;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .pdv-cart-item .pdv-ci-qty button:hover {
+    background: #ff7a00;
+    color: #0d0d0d;
+  }
+
+  .pdv-cart-empty {
+    color: #777;
+    text-align: center;
+    font-style: italic;
+    margin-top: 30px;
+  }
+
+  .pdv-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 14px 0;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .pdv-total-row span:last-child { color: #ff7a00; }
+
+  .pdv-checkout-btn {
+    background: #ff7a00;
+    color: #0d0d0d;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    text-transform: uppercase;
+  }
+
+  .pdv-checkout-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .pdv-checkout-btn:hover:not(:disabled) {
+    opacity: 0.88;
+  }
+
+  .pdv-pagamento-btn {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .pdv-pagamento-btn:hover {
+    border-color: #ff7a00;
+  }
+  .pdv-pagamento-btn.selecionado {
+    background: #ff7a00;
+    border-color: #ff7a00;
+    color: #0d0d0d;
+  }
+</style>
+
+<div class="pdv-title" style="display: flex; align-items: center; gap: 16px;">
+  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="HD Drones"
+       style="height: 52px; width: 52px; object-fit: contain; border-radius: 8px; background: #0d0d0d; border: 1px solid #262626;">
+  <h1 style="margin: 0;">PDV &mdash; Frente de <span>Caixa</span></h1>
+</div>
+
+<div class="pdv-wrap">
+  <div class="pdv-catalog">
+    <input type="text" id="pdv-search-input" class="pdv-search" placeholder="Buscar produto por nome ou categoria...">
+    <div class="pdv-grid" id="pdv-grid">
+      {% for p in produtos %}
+      <div class="pdv-product {% if p.stock_quantity <= 0 %}out-of-stock{% endif %}"
+           data-id="{{ p.id }}"
+           data-name="{{ p.name }}"
+           data-price="{{ p.sale_price }}"
+           data-stock="{{ p.stock_quantity }}"
+           data-search="{{ p.name|lower }} {{ p.category|lower }}">
+        <span class="pdv-cat">{{ p.category }}</span>
+        <div class="pdv-name">{{ p.name }}</div>
+        <div class="pdv-price">R$ {{ '%.2f'|format(p.sale_price) }}</div>
+        <div class="pdv-stock">
+          {% if p.stock_quantity > 0 %}Estoque: {{ p.stock_quantity }}{% else %}Sem estoque{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="pdv-cart">
+    <h3>Carrinho</h3>
+    <div class="pdv-cart-items" id="pdv-cart-items">
+      <div class="pdv-cart-empty" id="pdv-cart-empty">Nenhum item adicionado ainda.</div>
+    </div>
+    <div class="pdv-total-row">
+      <span>Total</span>
+      <span id="pdv-total">R$ 0,00</span>
+    </div>
+
+    <div id="pdv-pagamento-selector" style="margin-bottom: 12px;">
+      <p style="font-size: 12px; text-transform: uppercase; color: #999; margin-bottom: 8px;">Forma de pagamento</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button type="button" class="pdv-pagamento-btn" data-forma="dinheiro">💵 Dinheiro</button>
+        <button type="button" class="pdv-pagamento-btn" data-forma="pix">📱 Pix</button>
+        <button type="button" class="pdv-pagamento-btn" data-forma="credito">💳 Crédito</button>
+        <button type="button" class="pdv-pagamento-btn" data-forma="debito">💳 Débito</button>
+      </div>
+    </div>
+
+    <button class="pdv-checkout-btn" id="pdv-checkout-btn" disabled>Finalizar Venda</button>
+
+    <div id="pdv-pix-panel" style="display:none; margin-top: 14px; text-align: center; border-top: 1px solid #2a2a2a; padding-top: 14px;">
+      <p style="font-size: 13px; color: #ccc;">Escaneie pra pagar via Pix:</p>
+      <img id="pdv-pix-qr" src="" alt="QR Code Pix" style="width: 180px; height: 180px; background: #fff; padding: 8px; border-radius: 8px;">
+      <div style="margin-top: 8px;">
+        <textarea id="pdv-pix-copiaecola" readonly style="width:100%; height:50px; background:#0d0d0d; color:#ccc; border:1px solid #333; border-radius:6px; font-size:10px; padding:6px;"></textarea>
+        <button id="pdv-pix-copiar" style="margin-top:6px; width:100%; background:#262626; color:#fff; border:1px solid #444; padding:8px; border-radius:6px; cursor:pointer;">Copiar código Pix</button>
+      </div>
+    </div>
+
+    <div id="pdv-fiscal-panel" style="display:none; margin-top: 14px; border-top: 1px solid #2a2a2a; padding-top: 14px;">
+      <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">Venda registrada! Emitir documento fiscal?</p>
+      <div style="display:flex; gap:8px; margin-bottom: 8px;">
+        <button id="pdv-btn-nfce" style="flex:1; background:#ff7a00; color:#0d0d0d; border:none; padding:10px; border-radius:6px; font-weight:700; cursor:pointer;">Cupom Fiscal (NFC-e)</button>
+        <button id="pdv-btn-nfe" style="flex:1; background:#262626; color:#fff; border:1px solid #444; padding:10px; border-radius:6px; font-weight:700; cursor:pointer;">Nota Fiscal (NF-e)</button>
+      </div>
+      <button id="pdv-btn-pular" style="width:100%; background:transparent; color:#999; border:none; padding:8px; cursor:pointer; text-decoration:underline;">Pular por enquanto</button>
+      <div id="pdv-fiscal-resultado" style="margin-top:10px; font-size:13px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var cart = {};
+
+  var grid = document.getElementById('pdv-grid');
+  var searchInput = document.getElementById('pdv-search-input');
+  var cartItemsEl = document.getElementById('pdv-cart-items');
+  var cartEmptyEl = document.getElementById('pdv-cart-empty');
+  var totalEl = document.getElementById('pdv-total');
+  var checkoutBtn = document.getElementById('pdv-checkout-btn');
+
+  function formatBRL(value) {
+    return 'R$ ' + value.toFixed(2).replace('.', ',');
+  }
+
+  function renderCart() {
+    var ids = Object.keys(cart);
+    cartItemsEl.innerHTML = '';
+
+    if (ids.length === 0) {
+      cartEmptyEl.style.display = 'block';
+      cartItemsEl.appendChild(cartEmptyEl);
+      checkoutBtn.disabled = true;
+      totalEl.textContent = formatBRL(0);
+      return;
+    }
+
+    cartEmptyEl.style.display = 'none';
+    var total = 0;
+
+    ids.forEach(function (id) {
+      var item = cart[id];
+      var subtotal = item.price * item.qty;
+      total += subtotal;
+
+      var row = document.createElement('div');
+      row.className = 'pdv-cart-item';
+      row.innerHTML =
+        '<div class="pdv-ci-name">' + item.name + '<br><small>' + formatBRL(item.price) + ' cada</small></div>' +
+        '<div class="pdv-ci-qty">' +
+        '<button data-action="dec" data-id="' + id + '">-</button>' +
+        '<span>' + item.qty + '</span>' +
+        '<button data-action="inc" data-id="' + id + '">+</button>' +
+        '</div>' +
+        '<div><strong>' + formatBRL(subtotal) + '</strong></div>';
+      cartItemsEl.appendChild(row);
+    });
+
+    totalEl.textContent = formatBRL(total);
+    checkoutBtn.disabled = false;
+  }
+
+  grid.addEventListener('click', function (e) {
+    var card = e.target.closest('.pdv-product');
+    if (!card || card.classList.contains('out-of-stock')) return;
+
+    var id = card.dataset.id;
+    var stock = parseInt(card.dataset.stock, 10);
+    var existing = cart[id];
+    var currentQty = existing ? existing.qty : 0;
+
+    if (currentQty + 1 > stock) {
+      alert('Estoque insuficiente para adicionar mais unidades deste produto.');
+      return;
+    }
+
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart[id] = {
+        name: card.dataset.name,
+        price: parseFloat(card.dataset.price),
+        stock: stock,
+        qty: 1
+      };
+    }
+    renderCart();
+  });
+
+  cartItemsEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var id = btn.dataset.id;
+    var item = cart[id];
+    if (!item) return;
+
+    if (btn.dataset.action === 'inc') {
+      if (item.qty + 1 > item.stock) {
+        alert('Estoque insuficiente.');
+        return;
+      }
+      item.qty += 1;
+    } else if (btn.dataset.action === 'dec') {
+      item.qty -= 1;
+      if (item.qty <= 0) delete cart[id];
+    }
+    renderCart();
+  });
+
+  searchInput.addEventListener('input', function () {
+    var term = searchInput.value.toLowerCase().trim();
+    var cards = grid.querySelectorAll('.pdv-product');
+    cards.forEach(function (card) {
+      var match = card.dataset.search.indexOf(term) !== -1;
+      card.style.display = match ? '' : 'none';
+    });
+  });
+
+  var fiscalPanel = document.getElementById('pdv-fiscal-panel');
+  var fiscalResultado = document.getElementById('pdv-fiscal-resultado');
+  var currentSaleId = null;
+  var formaPagamentoSelecionada = null;
+
+  document.querySelectorAll('.pdv-pagamento-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.pdv-pagamento-btn').forEach(function (b) { b.classList.remove('selecionado'); });
+      btn.classList.add('selecionado');
+      formaPagamentoSelecionada = btn.dataset.forma;
+    });
+  });
+
+  function mostrarPix(saleId) {
+    var pixPanel = document.getElementById('pdv-pix-panel');
+    var pixImg = document.getElementById('pdv-pix-qr');
+    var pixTexto = document.getElementById('pdv-pix-copiaecola');
+
+    fetch('/pdv/venda/' + saleId + '/pix')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success) {
+          pixImg.src = 'data:image/png;base64,' + data.qr_base64;
+          pixTexto.value = data.payload;
+          pixPanel.style.display = 'block';
+        } else {
+          pixPanel.innerHTML = '<p style="color:#e57373; font-size:13px;">' + data.message + '</p>';
+          pixPanel.style.display = 'block';
+        }
+      });
+  }
+
+  document.getElementById('pdv-pix-copiar').addEventListener('click', function () {
+    var texto = document.getElementById('pdv-pix-copiaecola');
+    texto.select();
+    document.execCommand('copy');
+    this.textContent = 'Copiado!';
+  });
+
+  function emitirDocumento(tipo) {
+    fiscalResultado.textContent = 'Emitindo, aguarde...';
+    fetch('/pdv/venda/' + currentSaleId + '/emitir', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipo: tipo })
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success) {
+          var link = data.url_danfe ? ' <a href="' + data.url_danfe + '" target="_blank" style="color:#ff7a00;">Ver PDF</a>' : '';
+          fiscalResultado.innerHTML = '✅ Documento emitido! Nº ' + (data.numero || '') + link;
+        } else {
+          fiscalResultado.innerHTML = '⚠️ Não foi possível emitir: ' + (data.message || 'erro desconhecido') +
+            ' <br><small>(normal em homologação sem token configurado ainda)</small>';
+        }
+      })
+      .catch(function () {
+        fiscalResultado.textContent = 'Erro de conexão ao emitir o documento.';
+      });
+  }
+
+  document.getElementById('pdv-btn-nfce').addEventListener('click', function () { emitirDocumento('nfce'); });
+  document.getElementById('pdv-btn-nfe').addEventListener('click', function () { emitirDocumento('nfe'); });
+  document.getElementById('pdv-btn-pular').addEventListener('click', function () { window.location.reload(); });
+
+  checkoutBtn.addEventListener('click', function () {
+    if (!formaPagamentoSelecionada) {
+      alert('Selecione a forma de pagamento antes de finalizar.');
+      return;
+    }
+
+    var items = Object.keys(cart).map(function (id) {
+      return { product_id: parseInt(id, 10), quantity: cart[id].qty };
+    });
+
+    checkoutBtn.disabled = true;
+    checkoutBtn.textContent = 'Processando...';
+
+    fetch('{{ url_for("pdv_finalizar") }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: items, forma_pagamento: formaPagamentoSelecionada })
+    })
+      .then(function (res) {
+        return res.json().then(function (data) { return data; });
+      })
+      .then(function (data) {
+        if (data.success) {
+          currentSaleId = data.sale_id;
+          checkoutBtn.style.display = 'none';
+          document.getElementById('pdv-pagamento-selector').style.display = 'none';
+          fiscalPanel.style.display = 'block';
+          if (formaPagamentoSelecionada === 'pix') {
+            mostrarPix(currentSaleId);
+          }
+        } else {
+          alert('Não foi possível finalizar a venda: ' + data.message);
+          checkoutBtn.disabled = false;
+          checkoutBtn.textContent = 'Finalizar Venda';
+        }
+      })
+      .catch(function () {
+        alert('Erro de conexão ao tentar finalizar a venda.');
+        checkoutBtn.disabled = false;
+        checkoutBtn.textContent = 'Finalizar Venda';
+      });
+  });
+
+  renderCart();
+})();
+</script>
+{% endblock %}
