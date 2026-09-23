@@ -1,6 +1,6 @@
-# HD Drones — Sistema de Gestão Comercial & PDV
+# Hangar — Sistema de Gestão Comercial & PDV
 
-Sistema desenvolvido sob medida para a **HD Drones**, unificando em um único lugar o que antes era espalhado por vários sistemas genéricos: frente de caixa, controle de oficina, estoque, comissões e emissão fiscal.
+Sistema desenvolvido sob medida para a **Hangar**, unificando em um único lugar o que antes era espalhado por vários sistemas genéricos: frente de caixa, controle de oficina, estoque, comissões e emissão fiscal.
 
 Construído em Flask + Flask-Admin, com identidade visual própria (preto e laranja) e integração fiscal real (NFC-e/NF-e via Focus NFe) e Pix.
 
@@ -14,6 +14,18 @@ Construído em Flask + Flask-Admin, com identidade visual própria (preto e lara
 - **Pix integrado** — geração de QR Code (Pix estático/BR Code) com o valor exato da venda, sem depender de gateway pago
 - **Painel gerencial** — métricas mensais (faturamento, ticket médio, ranking de vendedores), visível apenas para o papel "dono"
 - **Controle de acesso por papéis** — usuários, superusuários e dono têm visões diferentes do sistema
+
+## 📸 Capturas de tela
+
+<!-- Substitua os arquivos em screenshots/ pelos prints atuais do sistema e ajuste os nomes abaixo se necessário -->
+
+| Dashboard | PDV |
+|---|---|
+| ![Dashboard](screenshots/dashboard.png) | ![PDV](screenshots/pdv.png) |
+
+| Ordens de Serviço | Login |
+|---|---|
+| ![Ordens de Serviço](screenshots/ordens-servico.png) | ![Login](screenshots/login.png) |
 
 ## 🚀 Como rodar localmente
 
