@@ -1,61 +1,58 @@
-# Flask-Admin Dashboard Example
+# HD Drones — Sistema de Gestão Comercial & PDV
 
-Basic dashboard app with Admin LTE template and Flask Admin, it has:
+Sistema desenvolvido sob medida para a **HD Drones**, unificando em um único lugar o que antes era espalhado por vários sistemas genéricos: frente de caixa, controle de oficina, estoque, comissões e emissão fiscal.
 
-- User Registration
-- Login as general or admin user
-- Roles management
-- Create form in modal window by default
-- Inline editing enabled by default
-- Skins and  layout customization
-- Dashboard, charts, chat and calendar examples
- 
-Utilities: 
+Construído em Flask + Flask-Admin, com identidade visual própria (preto e laranja) e integração fiscal real (NFC-e/NF-e via Focus NFe) e Pix.
 
-  - AdminLTE Bootstrap template
-  - Flask-Security
-  - Flask-Admin
-  - A lot of Charts libraries
-  - SQLite
+## ✨ Funcionalidades
 
+- **PDV (Frente de Caixa)** — venda rápida no balcão, com busca de produtos, carrinho dinâmico e baixa automática de estoque
+- **Ordens de Serviço (Oficina)** — controle de avaliação e manutenção de drones, com isenção automática da taxa de avaliação quando o conserto é realizado
+- **Comissão automática por categoria** — calculada sozinha (produto novo, seminovo ou peça), sem planilha
+- **Trava de preço mínimo** — impede vender abaixo do valor de segurança por engano
+- **Emissão fiscal** — Cupom Fiscal (NFC-e) e Nota Fiscal (NF-e) direto do sistema, via Focus NFe
+- **Pix integrado** — geração de QR Code (Pix estático/BR Code) com o valor exato da venda, sem depender de gateway pago
+- **Painel gerencial** — métricas mensais (faturamento, ticket médio, ranking de vendedores), visível apenas para o papel "dono"
+- **Controle de acesso por papéis** — usuários, superusuários e dono têm visões diferentes do sistema
 
-### How to use
+## 📸 Capturas de tela
 
-- Clone or download the git repository.
-    ```sh
-    $ git clone https://github.com/jonalxh/Flask-Admin-Dashboard.git
-    ```
-- Create and activate a virtual environment:
-    ```sh
-    $ virtualenv venv
-    $ source venv/bin/activate
-    ```
-- Install the requirements inside the app folder
-    ```sh
-    $ pip install -r requirements.txt
-    ```
-- Once the process finishes give execution permission to app.py file and run it
-    ```sh
-    $ chmod +x app.py
-    $ ./app.py
-    ```
-- The first execution will create automatically a sample sqlite database.
-- Open your favorite browser and type
-    ```
-    localhost:5000/admin
-    ```
-    then just log in with the default user or register one. 
+<!-- Substitua os arquivos em screenshots/ pelos prints atuais do sistema e ajuste os nomes abaixo se necessário -->
 
-### Screenshots
-![Index](screenshots/index.png)
-![Login](screenshots/login.png)
-![Register](screenshots/register.png)
-![Home](screenshots/home.png)
-![User](screenshots/user.png)
-![Edit](screenshots/edit.png)
-![Create](screenshots/create.png)
-![Skins and Layout](screenshots/skins.png)
+| Dashboard | PDV |
+|---|---|
+| ![Dashboard](screenshots/dashboard.png) | ![PDV](screenshots/pdv.png) |
 
+| Ordens de Serviço | Login |
+|---|---|
+| ![Ordens de Serviço](screenshots/ordens-servico.png) | ![Login](screenshots/login.png) |
 
+## 🚀 Como rodar localmente
 
-**I hope you enjoy it.**
+1. Clone o repositório e crie o ambiente virtual:
+   ```
+   python -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+2. Copie o arquivo de configuração de exemplo e preencha com seus valores reais:
+   ```
+   copy config.example.py config.py
+   ```
+   Edite `config.py` com sua chave secreta, token da Focus NFe (homologação é gratuito) e chave Pix.
+
+3. Rode o sistema:
+   ```
+   python app.py
+   ```
+
+4. Acesse `https://localhost:5000` — na primeira execução, o sistema cria automaticamente um usuário administrador de exemplo (veja `app.py` para as credenciais padrão de teste).
+
+## 🔒 Segurança
+
+O arquivo `config.py` contém dados sensíveis (tokens, chaves) e **nunca é versionado** — está no `.gitignore`. Use sempre `config.example.py` como referência de quais variáveis preencher.
+
+## 🛠️ Stack
+
+Flask · Flask-Admin · Flask-Security · SQLAlchemy · Flask-Babel (i18n pt-BR) · Focus NFe (fiscal) · Pix (BR Code / QR estático)
