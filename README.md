@@ -15,18 +15,6 @@ Construído em Flask + Flask-Admin, com identidade visual própria (preto e lara
 - **Painel gerencial** — métricas mensais (faturamento, ticket médio, ranking de vendedores), visível apenas para o papel "dono"
 - **Controle de acesso por papéis** — usuários, superusuários e dono têm visões diferentes do sistema
 
-## 📸 Capturas de tela
-
-<!-- Substitua os arquivos em screenshots/ pelos prints atuais do sistema e ajuste os nomes abaixo se necessário -->
-
-| Dashboard | PDV |
-|---|---|
-| ![Dashboard](screenshots/dashboard.png) | ![PDV](screenshots/pdv.png) |
-
-| Ordens de Serviço | Login |
-|---|---|
-| ![Ordens de Serviço](screenshots/ordens-servico.png) | ![Login](screenshots/login.png) |
-
 ## 🚀 Como rodar localmente
 
 1. Clone o repositório e crie o ambiente virtual:
