@@ -45,7 +45,7 @@ def pdv_gerar_pix(sale_id):
     if not chave_pix:
         return jsonify({'success': False, 'message': 'Chave Pix não configurada em config.py (PIX_KEY).'}), 400
 
-    nome = app.config.get('PIX_MERCHANT_NAME', 'HD DRONES')
+    nome = app.config.get('PIX_MERCHANT_NAME', 'HANGAR')
     cidade = app.config.get('PIX_MERCHANT_CITY', 'SAO PAULO')
 
     payload = pix_service.gerar_payload_pix(
@@ -286,7 +286,7 @@ security = Security(app, user_datastore)
 
 
 # === VIEW CUSTOMIZADA DO DASHBOARD (usa templates/admin/custom_index.html) ===
-class HDDronesIndexView(AdminIndexView):
+class HangarIndexView(AdminIndexView):
     def is_accessible(self):
         return current_user.is_active and current_user.is_authenticated
 
@@ -602,8 +602,8 @@ class SaleView(MyModelView):
 # === INICIALIZAÇÃO DO ADMIN ===
 admin = flask_admin.Admin(
     app,
-    'HD Drones - Gestão Comercial & PDV',
-    index_view=HDDronesIndexView(),
+    'Hangar - Gestão Comercial & PDV',
+    index_view=HangarIndexView(),
     theme=Bootstrap4Theme(swatch='darkly', base_template='my_master.html')
 )
 
@@ -663,7 +663,7 @@ def build_sample_db():
 
         user_datastore.create_user(
             first_name='Vendedor',
-            email='vendedor@hddrones.com',
+            email='vendedor@hangar.com.br',
             password=hash_password('vendedor123'),
             active=True,
             fs_uniquifier=uuid.uuid4().hex,

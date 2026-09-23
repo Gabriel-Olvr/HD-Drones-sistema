@@ -4,7 +4,7 @@
 {{ super() }}
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
 <style>
-    /* === TEMA GLOBAL HD DRONES (aplicado em TODAS as páginas do painel) === */
+    /* === TEMA GLOBAL HANGAR (aplicado em TODAS as páginas do painel) === */
 
     body, html {
         font-family: 'Montserrat', sans-serif !important;
@@ -300,9 +300,9 @@
 
 {% block brand %}
 <a href="{{ admin_view.admin.url }}" class="navbar-brand" style="display: flex; align-items: center; gap: 8px; padding-top: 8px; padding-bottom: 8px;">
-    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="HD Drones"
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Hangar"
          style="height: 34px; width: 34px; object-fit: contain; border-radius: 6px;">
-    <span style="color: #ff7a00; font-weight: 900; font-style: italic; letter-spacing: -0.5px; font-size: 1.05em;">HD DRONES</span>
+    <span style="color: #ff7a00; font-weight: 900; font-style: italic; letter-spacing: -0.5px; font-size: 1.05em;">HANGAR</span>
 </a>
 {% endblock %}
 

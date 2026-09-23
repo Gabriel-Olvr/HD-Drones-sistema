@@ -34,7 +34,7 @@ def _tlv(id_: str, value: str) -> str:
 
 
 def gerar_payload_pix(chave_pix: str, nome_recebedor: str, cidade_recebedor: str,
-                       valor: float, identificador: str = 'HDDRONES'):
+                       valor: float, identificador: str = 'HANGAR'):
     """
     Monta o payload "copia e cola" do Pix estático.
 
@@ -44,7 +44,7 @@ def gerar_payload_pix(chave_pix: str, nome_recebedor: str, cidade_recebedor: str
     valor: valor da cobrança (ex: 150.00)
     identificador: até 25 caracteres, aparece no app do pagador (ex: nº da venda)
     """
-    nome_recebedor = (nome_recebedor or 'HD DRONES')[:25]
+    nome_recebedor = (nome_recebedor or 'HANGAR')[:25]
     cidade_recebedor = (cidade_recebedor or 'SAO PAULO')[:15]
     identificador = (identificador or '***')[:25]
 

@@ -40,7 +40,7 @@ def _montar_itens(itens_venda):
             "numero_item": str(idx),
             "codigo_produto": str(item.get('codigo', idx)),
             "descricao": item['descricao'],
-            "codigo_ncm": item.get('ncm', '85260000'),  # placeholder genérico p/ eletrônicos - AJUSTAR com contador
+            "codigo_ncm": item.get('ncm', '88069200'),  # drone completo 250g-7kg c/ câmera - AJUSTAR por produto com contador
             "cfop": "5102",
             "unidade_comercial": "UN",
             "quantidade_comercial": item['quantidade'],
@@ -101,7 +101,7 @@ def emitir_nfce(venda, itens_venda, cnpj_emitente):
     """
     venda: objeto Sale (usa venda.id e venda.created_at)
     itens_venda: lista formatada por _montar_itens
-    cnpj_emitente: CNPJ da HD Drones (vem do config.py)
+    cnpj_emitente: CNPJ da Hangar (vem do config.py)
     """
     ref = f"nfce-venda-{venda.id}-{uuid.uuid4().hex[:8]}"
     payload = {
